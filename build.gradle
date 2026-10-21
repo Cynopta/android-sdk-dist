@@ -1,0 +1,54 @@
+plugins {
+    id 'maven-publish'
+}
+
+def releaseVersion = project.findProperty("version")
+if (!releaseVersion || releaseVersion == "unspecified") {
+    releaseVersion = "1.0.15"
+}
+version = releaseVersion
+group = "com.github.Cynopta"
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.github.Cynopta'
+            artifactId = 'android-sdk-dist'
+            version = project.version
+
+            artifact("cynopta-sdk-release.aar") {
+                extension 'aar'
+            }
+
+            pom {
+                name = 'Cynopta Android SDK'
+                description = 'Enterprise Mobile Threat Defense & Behavioral Trust Assessment SDK'
+                url = 'https://github.com/Cynopta/android-sdk-dist'
+
+                licenses {
+                    license {
+                        name = 'Proprietary'
+                        url = 'https://cynopta.com/terms'
+                    }
+                }
+            }
+
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+                [
+                    [group: 'androidx.annotation', name: 'annotation', version: '1.9.1'],
+                    [group: 'androidx.core', name: 'core-ktx', version: '1.13.1'],
+                    [group: 'androidx.lifecycle', name: 'lifecycle-process', version: '2.8.7'],
+                    [group: 'io.sentry', name: 'sentry-android-core', version: '8.3.0'],
+                    [group: 'androidx.sqlite', name: 'sqlite', version: '2.4.0']
+                ].each { dep ->
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', dep.group)
+                    dependencyNode.appendNode('artifactId', dep.name)
+                    dependencyNode.appendNode('version', dep.version)
+                    dependencyNode.appendNode('scope', 'runtime')
+                }
+            }
+        }
+    }
+}
