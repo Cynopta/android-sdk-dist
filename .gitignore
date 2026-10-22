@@ -3,3 +3,7 @@ build/
 *.iml
 .idea/
 .DS_Store
+
+# Whitelist distribution artifacts over global gitignore
+!cynopta-sdk-release.aar
+!gradle/wrapper/gradle-wrapper.jar

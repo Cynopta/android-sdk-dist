@@ -35,7 +35,7 @@ Add the Cynopta SDK to your app module's `build.gradle` (or `build.gradle.kts`):
 
 ```groovy
 dependencies {
-    implementation 'com.github.Cynopta:android-sdk-dist:1.0.15'
+    implementation 'com.github.Cynopta:android-sdk-dist:1.0.16'
 }
 ```
 
@@ -53,47 +53,67 @@ Example `cynopta.json`:
 }
 ```
 
-### Step 4: Initialize in Application.onCreate
+### Step 4: That's It! (Zero Code Changes)
+The Cynopta SDK automatically initializes on app launch using **AndroidX App Startup**. You do **not** need to create or modify an `Application` class.
+
+---
+
+## 2. Trust Score API Usage
+
+Query the continuous trust score at any point in your application:
+
+### Asynchronous (Main / UI Thread)
 ```kotlin
-package com.example.myapp
-
-import android.app.Application
 import com.cynopta.sdk.Cynopta
+import com.cynopta.sdk.TrustCallback
+import com.cynopta.sdk.TrustEvaluation
 
-class MyApplication : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        Cynopta.start(this)
+Cynopta.getLatestTrustEvaluation(context, object : TrustCallback {
+    override fun onResult(evaluation: TrustEvaluation) {
+        val score: Float = evaluation.score // 0.00 (Untrusted) to 1.00 (Verified Human)
+        // Apply your application logic based on the trust score
     }
-}
+
+    override fun onError(error: Throwable) {
+        // Handle evaluation failure
+    }
+})
+```
+
+### Synchronous (Background Thread / Coroutines)
+```kotlin
+val evaluation = Cynopta.getLatestTrustEvaluation(context)
+val score: Float = evaluation.score
 ```
 
 ---
 
-## 2. Automatic Integration with AI Agents (Cursor, Antigravity, Copilot, Claude)
+## 3. Automatic Integration with AI Agents (Cursor, Antigravity, Copilot, Claude)
 
 Copy and paste this prompt directly into your AI coding assistant:
 
-```markdown
+````markdown
 Integrate the Cynopta Android SDK into this project:
 
 1. Add JitPack repository into settings.gradle or settings.gradle.kts:
    maven { url 'https://jitpack.io' }
 
 2. Add dependency to app/build.gradle:
-   implementation 'com.github.Cynopta:android-sdk-dist:1.0.15'
+   implementation 'com.github.Cynopta:android-sdk-dist:1.0.16'
 
-3. Create app/src/main/assets/cynopta.json with:
-   {
-     "license": "<YOUR_LICENSE_TOKEN>",
-     "apiKey": "<YOUR_API_KEY>"
-   }
+3. Validate that `cynopta.json` exists in `app/src/main/assets/cynopta.json` (this file should already be downloaded from the Cynopta Portal and placed there by the developer; if missing, prompt the developer to add it before proceeding).
 
-4. In the Application class onCreate() method, add:
-   Cynopta.start(this);
-
-5. Run ./gradlew assembleDebug to verify compilation.
-```
+4. Install, Launch & Verify via ADB:
+   Install the APK on your running emulator/device, launch it, and assert the Logcat success marker:
+   ```bash
+   ./gradlew installDebug
+   adb shell am start -n <YOUR_PACKAGE_NAME>/.MainActivity
+   sleep 3
+   adb logcat -d -s CynoptaSDK | grep "Cynopta SDK initialized successfully"
+   ```
+   Confirm that Logcat outputs `Cynopta SDK initialized successfully`.
+   (The SDK auto-starts on app launch via AndroidX App Startup; zero Kotlin/Java code changes are required).
+````
 
 ---
 
