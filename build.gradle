@@ -53,3 +53,8 @@ publishing {
         }
     }
 }
+
+tasks.register("assemble") {
+    description = "Placeholder assemble task for JitPack runner"
+    dependsOn "generatePomFileForMavenPublication"
+}
