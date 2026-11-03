@@ -4,7 +4,7 @@ plugins {
 
 def releaseVersion = project.findProperty("version")
 if (!releaseVersion || releaseVersion == "unspecified") {
-    releaseVersion = "1.0.17"
+    releaseVersion = "1.0.18"
 }
 version = releaseVersion
 group = "com.github.Cynopta"
@@ -40,6 +40,7 @@ publishing {
                     [group: 'androidx.core', name: 'core-ktx', version: '1.13.1'],
                     [group: 'androidx.lifecycle', name: 'lifecycle-process', version: '2.8.7'],
                     [group: 'androidx.startup', name: 'startup-runtime', version: '1.2.0'],
+                    [group: 'com.google.android.play', name: 'integrity', version: '1.4.0'],
                     [group: 'io.sentry', name: 'sentry-android-core', version: '8.3.0'],
                     [group: 'androidx.sqlite', name: 'sqlite', version: '2.4.0']
                 ].each { dep ->
