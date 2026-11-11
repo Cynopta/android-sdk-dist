@@ -35,7 +35,7 @@ Add the Cynopta SDK to your app module's `build.gradle` (or `build.gradle.kts`):
 
 ```groovy
 dependencies {
-    implementation 'com.github.Cynopta:android-sdk-dist:1.0.18'
+    implementation 'com.github.Cynopta:android-sdk-dist:1.0.19'
 }
 ```
 
@@ -99,7 +99,7 @@ Integrate the Cynopta Android SDK into this project:
    maven { url 'https://jitpack.io' }
 
 2. Add dependency to app/build.gradle:
-   implementation 'com.github.Cynopta:android-sdk-dist:1.0.18'
+   implementation 'com.github.Cynopta:android-sdk-dist:1.0.19'
 
 3. Validate that `cynopta.json` exists in `app/src/main/assets/cynopta.json` (this file should already be downloaded from the Cynopta Portal and placed there by the developer; if missing, prompt the developer to add it before proceeding).
 
