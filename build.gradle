@@ -4,7 +4,7 @@ plugins {
 
 def releaseVersion = project.findProperty("version")
 if (!releaseVersion || releaseVersion == "unspecified") {
-    releaseVersion = "1.0.22"
+    releaseVersion = "1.0.23"
 }
 version = releaseVersion
 group = "com.github.Cynopta"
